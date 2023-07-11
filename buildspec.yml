@@ -12,7 +12,7 @@ phases:
     commands:
       - echo "installing dependencies..."
       - sudo chmod -R 777 /codebuild/output
-      - chmod -R 775 storage
+      - chmod -R 775 storage/
       - chmod -R 775 storage/logs
       - composer install --ignore-platform-reqs
       - cp .env.example .env
@@ -26,9 +26,9 @@ phases:
       - echo "installing production dependencies..."
       - cp .env.example .env
       - sudo chmod -R 777 /codebuild/output
-      - chmod -R 775 storage
+      - chmod -R 775 storage/
       - chmod -R 775 storage/logs
-      - ls -a
+      - ls -l
       # - sed -i 's/DB_HOST=.*/DB_HOST=aws.connect.psdb.cloud/' .env
       # - sed -i 's/DB_DATABASE=.*/DB_DATABASE=todos/' .env
       # - sed -i 's/DB_USERNAME=.*/DB_USERNAME=pynwactoj2h8uq2fdd/' .env
