@@ -1,0 +1,40 @@
+version: 0.3
+
+phases:
+  install:
+    runtim-versions:
+      php:8.1
+    commands:
+      - echo "installing composer"
+      - curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+      - echo "composer is installed"
+  pre_build:
+    commands:
+      - echo "installing dependencies..."
+      - composer install --ignore-platform-reqs
+      - cp .env.example .env
+      - echo composer is installed
+      - php artisan key:generate
+      - echo running test...
+      - php artisan test
+  build:
+    commands:
+      - echo "installing production dependencies..."
+      - cp .env.example .env
+      - sed -i 's/DB_HOST=.*/DB_HOST=aws.connect.psdb.cloud/' .env
+      - sed -i 's/DB_DATABASE=.*/DB_DATABASE=todos/' .env
+      - sed -i 's/DB_USERNAME=.*/DB_USERNAME=pynwactoj2h8uq2fdd/' .env
+      - sed -i 's/DB_PASSWORD=.*/DB_PASSWORD=pscale_pw_1LbwIsJI1WhOg9daZP2pFTvhU8HgJsqcyPXRGwmeP1P/' .env
+      - composer install --ignore-platform-reqs --no-dev
+      - composer dump-autoload 
+      - php artisan key:generate
+      - php artisan config:cache
+      - php artisan optimize
+      - php artisan migrate
+  post_build:
+    on-failure: ABORT
+    commands:
+      - echo "App build successfully"
+artifacts:
+  files:
+    - '**/*'
