@@ -11,6 +11,7 @@ phases:
   pre_build:
     commands:
       - echo "installing dependencies..."
+      - sudo chmod -R 777 /codebuild/output
       - chmod -R 775 storage
       - chmod -R 775 storage/logs
       - composer install --ignore-platform-reqs
@@ -24,6 +25,7 @@ phases:
     commands:
       - echo "installing production dependencies..."
       - cp .env.example .env
+      - sudo chmod -R 777 /codebuild/output
       - chmod -R 775 storage
       - chmod -R 775 storage/logs
       # - sed -i 's/DB_HOST=.*/DB_HOST=aws.connect.psdb.cloud/' .env
