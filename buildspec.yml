@@ -12,17 +12,20 @@ phases:
     commands:
       - echo "installing dependencies..."
       - chmod -R 775 storage
+      - chmod -R 775 storage/logs
       - composer install --ignore-platform-reqs
       - cp .env.example .env
       - echo composer is installed
       - php artisan key:generate
       - echo running test...
       - php artisan test
+      - php artisan optimize:clear
   build:
     commands:
       - echo "installing production dependencies..."
       - cp .env.example .env
       - chmod -R 775 storage
+      - chmod -R 775 storage/logs
       # - sed -i 's/DB_HOST=.*/DB_HOST=aws.connect.psdb.cloud/' .env
       # - sed -i 's/DB_DATABASE=.*/DB_DATABASE=todos/' .env
       # - sed -i 's/DB_USERNAME=.*/DB_USERNAME=pynwactoj2h8uq2fdd/' .env
@@ -31,6 +34,7 @@ phases:
       - composer install --ignore-platform-reqs --no-dev
       - composer dump-autoload 
       - php artisan key:generate
+      - php artisan optimize:clear
       - php artisan config:cache
       - php artisan optimize
       - php artisan migrate
